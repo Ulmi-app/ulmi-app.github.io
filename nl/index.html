@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="nl" data-palette="2">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ulmi downloaden (testversie)</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--page:#fbfaf7;--carte:#ffffff;--carte-voile:rgba(255,255,255,.78);--interne:#f7f6f2;--filet:#d9d6cf;--filet-fort:#8b9097;--titre:#111418;--texte:#3d4249;--note:#5f656d;--valider-f:#fff1a8;--valider-t:#111418;--fond-op:.13;--ombre:0 1px 2px rgba(17,20,24,.08),0 10px 24px -8px rgba(17,20,24,.18);
+ --p:#0b6e4f;--p-tx:#ffffff;--p-pale:#e3f2ec;--s:#b4540a;--s-tx:#ffffff;--s-pale:#fbebdc}
+:root[data-palette="2"]{--p:#0a6178;--p-tx:#ffffff;--p-pale:#e0f0f4;--s:#b0245a;--s-tx:#ffffff;--s-pale:#f9e3ec}
+@media (prefers-color-scheme:dark){
+ :root{--page:#0e1013;--carte:#171a1f;--carte-voile:rgba(23,26,31,.80);--interne:#1e2228;--filet:#30353d;--filet-fort:#7d848e;--titre:#f3f4f6;--texte:#c9cdd3;--note:#9aa1ab;--valider-f:#5a4b00;--valider-t:#fff6c8;--fond-op:.16;--ombre:0 1px 2px rgba(0,0,0,.4),0 10px 24px -8px rgba(0,0,0,.6);
+  --p:#4fd1a1;--p-tx:#06251b;--p-pale:#173a30;--s:#f0a05a;--s-tx:#2a1403;--s-pale:#3d2713}
+ :root[data-palette="2"]{--p:#5cc8e0;--p-tx:#04232c;--p-pale:#143642;--s:#f08cb0;--s-tx:#33071a;--s-pale:#40192b}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--texte);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;overflow-x:hidden}
+main{max-width:1000px;margin:0 auto;padding:0 16px 20px;text-align:center}
+.fondpage{position:fixed;inset:0;z-index:0;pointer-events:none;color:var(--p);opacity:var(--fond-op);display:flex;align-items:center;justify-content:center;padding:0}
+.fondpage svg{width:90%;height:90%}
+.fondpage text{font:600 36px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;fill:currentColor;stroke:none}
+main{position:relative;z-index:1}
+.logozone{position:relative;height:150px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.logozone .fond{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;color:var(--p);opacity:var(--fond-op)}
+.logozone .fond svg{height:100%;width:auto;max-width:100%}
+.logozone .logo{position:relative;width:112px;height:112px;filter:drop-shadow(0 6px 14px rgba(17,20,24,.22))}
+.nom{display:block;font-size:30px;font-weight:800;color:var(--p);letter-spacing:.01em;line-height:1.1;margin:2px 0 8px}
+h1{font-size:clamp(24px,6.2vw,32px);line-height:1.2;color:var(--titre);margin:0 0 8px;letter-spacing:-.01em;text-wrap:balance}
+.chapeau{color:var(--note);margin:0 auto 14px;max-width:640px;font-size:17px}
+.atouts{margin:0 0 18px;padding:0;list-style:none;display:flex;flex-direction:column;align-items:center;gap:8px}
+.atouts li{display:flex;align-items:center;gap:10px;font-weight:600;color:var(--titre)}
+.pastille{flex:none;width:34px;height:34px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--p-pale);color:var(--p)}
+.atouts li:nth-child(2) .pastille{background:var(--s-pale);color:var(--s)}
+.pastille svg{width:20px;height:20px}
+mark{background:var(--valider-f);color:var(--valider-t);padding:1px 4px;border-radius:4px;font-weight:500;font-size:.85em}
+.cartes{display:grid;grid-template-columns:1fr;gap:16px;align-items:stretch}
+.carte{display:flex;flex-direction:column;align-items:center;background:var(--carte);border:1px solid var(--filet);border-top:6px solid var(--p);border-radius:24px;padding:18px 20px 20px;box-shadow:var(--ombre)}
+.carte.deux{border-top-color:var(--s)}
+h3{font-size:21px;color:var(--titre);margin:0 0 4px}
+.carte.un h3{color:var(--p)} .carte.deux h3{color:var(--s)}
+p{margin:0 0 10px}
+.illus{margin:auto 0;width:112px;height:112px;border-radius:50%;background:var(--p-pale);color:var(--p);display:flex;align-items:center;justify-content:center}
+.illus svg{width:60px;height:60px}
+.bas{margin-top:auto;width:100%;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding-top:8px}
+form{display:flex;flex-direction:column;align-items:center;flex:1;width:100%}
+label{display:block;font-weight:600;color:var(--titre);margin-bottom:6px}
+label small{font-weight:400;color:var(--note)}
+input[type=email]{width:100%;max-width:360px;font:inherit;text-align:center;padding:10px 14px;border-radius:14px;border:1px solid var(--filet-fort);background:var(--interne);color:var(--titre);min-height:46px}
+button,.btn{font:inherit;font-weight:700;line-height:1.2;min-height:50px;padding:10px 24px;border-radius:999px;border:1px solid var(--p);background:var(--p);color:var(--p-tx);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-width:170px}
+.carte.deux button[type=submit]{background:var(--s);border-color:var(--s);color:var(--s-tx);min-width:240px}
+.btn:focus-visible,button:focus-visible,input:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--titre);outline-offset:3px}
+.choix{display:flex;justify-content:center;gap:22px;margin:6px 0 2px}
+.choix label{display:flex;align-items:center;gap:8px;font-weight:500;margin:0;color:var(--texte);min-height:38px}
+.choix input,.case input{width:22px;height:22px;margin:0;accent-color:var(--s)}
+.case{display:flex;align-items:center;justify-content:center;gap:10px;margin:2px 0 10px;font-weight:500;color:var(--texte);text-align:left}
+.case input{flex:none}
+.case b{color:var(--titre)}
+details{margin:14px auto 0;max-width:620px;font-size:15px;color:var(--note)}
+summary{cursor:pointer;font-weight:700;color:var(--p);min-height:30px;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:" ▾"}
+details[open] summary::after{content:" ▴"}
+details ol{text-align:left;padding-left:22px;margin:6px 0 0}
+details li{margin:5px 0}
+footer{margin-top:12px;font-size:13.5px;color:var(--note)}
+footer a{color:inherit}
+.adresse{margin:10px auto 0;max-width:none;font-size:12.5px;line-height:1.45;color:var(--note);text-align:left}
+.adresse summary{font-size:13px;font-weight:600;color:var(--note);text-align:center;min-height:24px}
+.adresse p{margin:6px 0}
+.tel-seul{display:none;font-size:14px;line-height:1.5;margin:10px 0 4px;text-align:center;font-weight:600}
+@media (hover:none) and (pointer:coarse){.carte.un .bas{display:none}.carte.un .illus{display:none}.pas-tel{display:none}.tel-seul{display:block}}
+.dl{display:flex;flex-direction:column;align-items:center;gap:4px}
+.poids{font-size:12.5px;color:var(--note)}
+.conditions{font-size:13.5px;line-height:1.5;margin:4px 0 6px;text-align:center}
+.mention{font-size:12.5px;line-height:1.45;color:var(--note);margin:12px 0 0;text-align:center}
+.mention a{color:inherit}
+.nom,h1,.chapeau,.atouts li,summary,footer{width:fit-content;margin-left:auto;margin-right:auto;background:var(--page);box-shadow:0 0 14px 10px var(--page);border-radius:14px}
+@media (min-width:860px){
+ .atouts{flex-direction:row;justify-content:center;gap:12px 34px}
+ .atouts li{white-space:nowrap}
+ .cartes{grid-template-columns:1fr 1fr}
+}
+@media (max-width:519px){.carte{padding:16px 14px 18px}.bas .btn,.carte.deux button[type=submit]{width:100%}.case{text-align:left}}
+.langues{position:absolute;top:10px;right:16px;z-index:2;font-size:13.5px;font-weight:600;display:flex;gap:10px}
+.langues a{color:var(--note);text-decoration:none}.langues a[aria-current]{color:var(--p);text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="fondpage" aria-hidden="true"><svg viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid meet" fill="none" stroke="currentColor" stroke-width="4">
+<rect x="560" y="10" width="280" height="110" rx="22"/><circle cx="700.0" cy="65.0" r="28"/><text x="700.0" y="76.0" text-anchor="middle">V</text>
+<path d="M700 120V380"/>
+<rect x="560" y="380" width="280" height="110" rx="22"/><circle cx="700.0" cy="435.0" r="28"/><text x="700.0" y="446.0" text-anchor="middle">D</text>
+<path d="M700 490V660M160 660H1240M160 660V780M520 660V780M880 660V780M1240 660V780"/>
+<rect x="20" y="780" width="280" height="110" rx="22"/><circle cx="160.0" cy="835.0" r="28"/><text x="160.0" y="846.0" text-anchor="middle">C</text>
+<rect x="380" y="780" width="280" height="110" rx="22"/><circle cx="520.0" cy="835.0" r="28"/><text x="520.0" y="846.0" text-anchor="middle">L</text>
+<rect x="740" y="780" width="280" height="110" rx="22"/><circle cx="880.0" cy="835.0" r="28"/><text x="880.0" y="846.0" text-anchor="middle">S</text>
+<rect x="1100" y="780" width="280" height="110" rx="22" stroke-dasharray="14 10"/><circle cx="1240.0" cy="835.0" r="28"/><text x="1240.0" y="846.0" text-anchor="middle">N</text>
+</svg></div>
+<nav class="langues" aria-label="Taal"><a href="../" lang="fr">FR</a><a href="./" lang="nl" aria-current="page">NL</a><a href="../en/" lang="en">EN</a></nav>
+<main>
+
+  <div class="logozone">
+        <svg class="logo" viewBox="0 0 512 512" aria-hidden="true"><defs><mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512"><rect width="512" height="512" fill="#fff"/><polygon points="242.76,254.44 336.24,308.56 517.74,-4.94 424.26,-59.06" fill="#000"/></mask></defs><rect x="8" y="8" width="496" height="496" rx="118" fill="#fbfaf7" stroke="#111418" stroke-width="20"/><rect x="125" y="146" width="250" height="250" rx="60" fill="none" stroke="#111418" stroke-width="56" mask="url(#m)"/><path d="M211 236 L273 310 L383 120" fill="none" stroke="#111418" stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <b class="nom">Ulmi</b>
+
+  <h1>Wij doen uw werk niet<br>Wij geven u de tijd om het goed te doen</h1>
+  <p class="chapeau">Zelfstandige of werknemer: uw papieren, deadlines en cijfers op dezelfde plek</p>
+  <ul class="atouts">
+    <li><span class="pastille" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17.5" cy="9" r="2.5"/><path d="M17 14.2c2.4.2 4 2.2 4 4.8"/></svg></span>Uw team van assistenten</li>
+    <li><span class="pastille" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v10.5l-2-2a1.7 1.7 0 0 0-2.4 2.4L9.5 19a5 5 0 0 0 3.5 1.5h2A5 5 0 0 0 20 15.5V11a1.6 1.6 0 0 0-3.200 0V9.500a1.600 1.600 0 0 0-3.200 0V8.500a1.600 1.600 0 0 0-3.200-.3V3a1.500 1.500 0 0 0-3 0z"/></svg></span>Er gaat niets weg zonder uw klik</li>
+    <li><span class="pastille" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7v9H4z"/><rect x="9.500" y="13" width="5" height="7" rx="1"/></svg></span><span>De AI werkt op uw computer</span></li>
+  </ul>
+
+  <div class="cartes">
+    <div class="carte un">
+      <h3>Ik ben uitgenodigd</h3>
+      <p class="pas-tel">Kies uw computer.</p>
+            <p class="conditions">U hebt minstens <b>16 GB geheugen</b> nodig en <b>ongeveer 15 GB vrije ruimte</b>: bij de eerste start downloadt Ulmi zijn AI (ongeveer 7 GB).</p>
+      <div class="illus" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="14" width="44" height="28" rx="4"/><path d="M4 50h56"/><path d="M32 22v12M26 29l6 6 6-6"/></svg></div>
+      <p class="tel-seul">Ulmi wordt op een computer (Mac of Windows) geïnstalleerd, niet op een telefoon. Open deze pagina op uw computer om het te downloaden. Van hieruit kunt u al uw aanvraag hieronder versturen.</p>
+      <div class="bas">
+        <div class="dl"><a class="btn" id="lien-windows" href="#">⬇ Voor Windows</a><small class="poids" id="poids-windows"></small></div>
+        <div class="dl"><a class="btn" id="lien-mac" href="#">⬇ Voor Mac</a><small class="poids" id="poids-mac"></small></div>
+      </div>
+    </div>
+
+    <div class="carte deux">
+      <h3>Ik wil het proberen</h3>
+      <p>Test gratis, of laat u verwittigen bij de lancering.</p>
+      <form id="formulaire">
+        <label for="adresse">Uw e-mailadres <small>(voorbeeld: voornaam@gmail.com)</small></label>
+        <input id="adresse" type="email" autocomplete="email" required placeholder="voornaam@gmail.com">
+        <div class="choix" role="radiogroup" aria-label="Uw computer">
+          <label><input type="radio" name="ordi" value="Windows" checked> Windows</label>
+          <label><input type="radio" name="ordi" value="Mac"> Mac</label>
+        </div>
+                <label class="case" for="prevenir"><input id="prevenir" type="checkbox"><span><b>Verwittig mij ook bij de lancering van Ulmi</b> (facultatief)</span></label>
+        <p class="mention">Arthur Nyssen schrijft u bij de lancering, en voor niets anders. U kunt zich op elk moment uitschrijven: antwoord “STOP”.</p>
+        <p class="mention">Arthur Nyssen gebruikt uw adres om u te antwoorden en u toegang tot de test te geven, door het bij Google te registreren (download en Gmail).</p>
+        <details class="adresse"><summary>Uw rechten en de details</summary>
+          <p>De knop opent uw mailprogramma met een kant-en-klare mail: u verstuurt hem zelf, deze pagina bewaart niets. Arthur Nyssen gebruikt uw adres om u te antwoorden over de test en om u toegang te geven: daarvoor registreren wij het bij Google (delen van de download, en Gmail-koppeling van de testversie). Wij bewaren het tot het einde van de test (uiterlijk 31/12/2027), daarna wissen wij het en trekken wij die toegangen in.</p>
+          <p><b>Als u “Verwittig mij” aanvinkt:</b> Door aan te vinken, voegt u aan uw mail de zin “Ik wil verwittigd worden van de lancering van Ulmi” toe. Arthur Nyssen schrijft u dan bij de lancering van Ulmi, en voor niets anders. Wij bewaren uw adres tot de lancering, daarna nog 6 maanden (uiterlijk tot 31/12/2027), en wissen het dan als u geen klant bent geworden. U kunt op elk moment van gedachten veranderen: antwoord “STOP” op een van onze mails. Aanvinken of niet verandert niets aan uw testaanvraag.</p>
+          <p><a href="confidentialite.html">Uw rechten en de details</a></p>
+        </details>
+        <p class="mention"><b>Om te testen</b>: een computer met minstens 16 GB geheugen en ongeveer 15 GB vrije ruimte; een Mac met Apple-chip (M1, M2…) of een Windows-pc.</p>
+        <div class="bas"><button type="submit">Mijn aanvraag versturen <span aria-hidden="true">→</span></button></div>
+      </form>
+    </div>
+  </div>
+
+  <details>
+    <summary>Hoe werkt het?</summary>
+    <ol>
+      <li>In deze testversie worden uw papieren naar geen enkele online AI-dienst gestuurd. Als u uw Gmail-mailbox koppelt, leest Ulmi uw mails bij Google en verstuurt het via Google de antwoorden die u goedkeurt. Uw documenten worden opgeborgen in uw map Documenten: als uw computer die map naar iCloud of OneDrive kopieert, worden ze daar ook gekopieerd, net als uw andere bestanden.</li>
+      <li>Alleen Macs met Apple-chip (M1, M2, M3…) zijn compatibel.</li>
+      <li>Google vraagt u om aan te melden met het adres dat u bij de registratie hebt opgegeven; als “Toegang aanvragen” verschijnt, is het nog niet geregistreerd: schrijf ons.</li>
+      <li>Open het gedownloade bestand en dubbelklik op “Ulmi.bat” (Windows) of “Ulmi.command” (Mac); de eerste installatie duurt van 10 minuten tot een uur.</li>
+      <li>Voor uw aanvraag bij voorkeur een Gmail-adres: de knop opent uw mailprogramma met een kant-en-klare mail, en u verstuurt hem zelf. Deze pagina bewaart niets.</li>
+    </ol>
+  </details>
+
+  <footer>Ulmi · testversie. Ulmi wordt uitgegeven door Arthur Nyssen, onderneming van een natuurlijke persoon, Rue de la Cité 5, boîte A021, 4000 Liège, België. Ondernemings- en btw-nummer: BE1032636759. Contact: <a id="contact" href="#"></a> · <a href="confidentialite.html">Privacybeleid</a> · Gezichten van de assistenten: door AI gegenereerde illustraties</footer>
+</main>
+
+<script>
+var CONTACT = 'ulmi.contact@gmail.com';
+var LIENS = {
+  windows: 'https://drive.google.com/file/d/12McP9gIOgaVq9f2mTSX7eR3KR2cKmbTs/view?usp=sharing',
+  mac: 'https://drive.google.com/file/d/16YywpF3eGJ3hBwCMfsfiwq4LxfjTwMFb/view?usp=sharing'
+};
+document.getElementById('lien-windows').href = LIENS.windows;
+document.getElementById('lien-mac').href = LIENS.mac;
+var POIDS = { windows: 'ongeveer 200 MB', mac: 'ongeveer 210 MB' };
+document.getElementById('poids-windows').textContent = 'Bestand: ' + POIDS.windows;
+document.getElementById('poids-mac').textContent = 'Bestand: ' + POIDS.mac;
+var c = document.getElementById('contact'); c.href = 'mailto:' + CONTACT; c.textContent = CONTACT;
+document.getElementById('formulaire').addEventListener('submit', function(e){
+  e.preventDefault();
+  var adresse = document.getElementById('adresse').value.trim();
+  var ordi = (document.querySelector('input[name="ordi"]:checked') || {}).value || '';
+  var prevenir = document.getElementById('prevenir').checked;
+  var sujet = encodeURIComponent('Mijn aanvraag voor Ulmi (test of lancering)');
+  var texte = 'Goedendag,\n\nIk wil graag deelnemen aan de test van Ulmi.\nMijn adres voor de test: ' + adresse + '\nMijn computer: ' + ordi + '\n';
+  if (prevenir) texte += 'Ik wil verwittigd worden van de lancering van Ulmi.\n';
+  texte += '\nBedankt!';
+  window.location.href = 'mailto:' + CONTACT + '?subject=' + sujet + '&body=' + encodeURIComponent(texte);
+});
+</script>
+</body>
+</html>
