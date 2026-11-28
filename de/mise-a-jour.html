@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="de" data-palette="2">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neue Version von Ulmi</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--page:#fbfaf7;--carte:#ffffff;--carte-voile:rgba(255,255,255,.78);--interne:#f7f6f2;--filet:#d9d6cf;--filet-fort:#8b9097;--titre:#111418;--texte:#3d4249;--note:#5f656d;--valider-f:#fff1a8;--valider-t:#111418;--fond-op:.13;--ombre:0 1px 2px rgba(17,20,24,.08),0 10px 24px -8px rgba(17,20,24,.18);
+ --p:#0b6e4f;--p-tx:#ffffff;--p-pale:#e3f2ec;--s:#b4540a;--s-tx:#ffffff;--s-pale:#fbebdc}
+:root[data-palette="2"]{--p:#0a6178;--p-tx:#ffffff;--p-pale:#e0f0f4;--s:#b0245a;--s-tx:#ffffff;--s-pale:#f9e3ec}
+@media (prefers-color-scheme:dark){
+ :root{--page:#0e1013;--carte:#171a1f;--carte-voile:rgba(23,26,31,.80);--interne:#1e2228;--filet:#30353d;--filet-fort:#7d848e;--titre:#f3f4f6;--texte:#c9cdd3;--note:#9aa1ab;--valider-f:#5a4b00;--valider-t:#fff6c8;--fond-op:.16;--ombre:0 1px 2px rgba(0,0,0,.4),0 10px 24px -8px rgba(0,0,0,.6);
+  --p:#4fd1a1;--p-tx:#06251b;--p-pale:#173a30;--s:#f0a05a;--s-tx:#2a1403;--s-pale:#3d2713}
+ :root[data-palette="2"]{--p:#5cc8e0;--p-tx:#04232c;--p-pale:#143642;--s:#f08cb0;--s-tx:#33071a;--s-pale:#40192b}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--texte);font:16px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;overflow-x:hidden}
+main{max-width:1000px;margin:0 auto;padding:0 16px 20px;text-align:center}
+.fondpage{position:fixed;inset:0;z-index:0;pointer-events:none;color:var(--p);opacity:var(--fond-op);display:flex;align-items:center;justify-content:center;padding:0}
+.fondpage svg{width:90%;height:90%}
+.fondpage text{font:600 36px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;fill:currentColor;stroke:none}
+main{position:relative;z-index:1}
+.logozone{position:relative;height:150px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.logozone .fond{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;color:var(--p);opacity:var(--fond-op)}
+.logozone .fond svg{height:100%;width:auto;max-width:100%}
+.logozone .logo{position:relative;width:112px;height:112px;filter:drop-shadow(0 6px 14px rgba(17,20,24,.22))}
+.nom{display:block;font-size:30px;font-weight:800;color:var(--p);letter-spacing:.01em;line-height:1.1;margin:2px 0 8px}
+h1{font-size:clamp(24px,6.2vw,32px);line-height:1.2;color:var(--titre);margin:0 0 8px;letter-spacing:-.01em;text-wrap:balance}
+.chapeau{color:var(--note);margin:0 auto 14px;max-width:640px;font-size:17px}
+.atouts{margin:0 0 18px;padding:0;list-style:none;display:flex;flex-direction:column;align-items:center;gap:8px}
+.atouts li{display:flex;align-items:center;gap:10px;font-weight:600;color:var(--titre)}
+.pastille{flex:none;width:34px;height:34px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--p-pale);color:var(--p)}
+.atouts li:nth-child(2) .pastille{background:var(--s-pale);color:var(--s)}
+.pastille svg{width:20px;height:20px}
+mark{background:var(--valider-f);color:var(--valider-t);padding:1px 4px;border-radius:4px;font-weight:500;font-size:.85em}
+.cartes{display:grid;grid-template-columns:1fr;gap:16px;align-items:stretch}
+.carte{display:flex;flex-direction:column;align-items:center;background:var(--carte);border:1px solid var(--filet);border-top:6px solid var(--p);border-radius:24px;padding:18px 20px 20px;box-shadow:var(--ombre)}
+.carte.deux{border-top-color:var(--s)}
+h3{font-size:21px;color:var(--titre);margin:0 0 4px}
+.carte.un h3{color:var(--p)} .carte.deux h3{color:var(--s)}
+p{margin:0 0 10px}
+.illus{margin:auto 0;width:112px;height:112px;border-radius:50%;background:var(--p-pale);color:var(--p);display:flex;align-items:center;justify-content:center}
+.illus svg{width:60px;height:60px}
+.bas{margin-top:auto;width:100%;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding-top:8px}
+form{display:flex;flex-direction:column;align-items:center;flex:1;width:100%}
+label{display:block;font-weight:600;color:var(--titre);margin-bottom:6px}
+label small{font-weight:400;color:var(--note)}
+input[type=email]{width:100%;max-width:360px;font:inherit;text-align:center;padding:10px 14px;border-radius:14px;border:1px solid var(--filet-fort);background:var(--interne);color:var(--titre);min-height:46px}
+button,.btn{font:inherit;font-weight:700;line-height:1.2;min-height:50px;padding:10px 24px;border-radius:999px;border:1px solid var(--p);background:var(--p);color:var(--p-tx);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-width:170px}
+.carte.deux button[type=submit]{background:var(--s);border-color:var(--s);color:var(--s-tx);min-width:240px}
+.btn:focus-visible,button:focus-visible,input:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--titre);outline-offset:3px}
+.choix{display:flex;justify-content:center;gap:22px;margin:6px 0 2px}
+.choix label{display:flex;align-items:center;gap:8px;font-weight:500;margin:0;color:var(--texte);min-height:38px}
+.choix input,.case input{width:22px;height:22px;margin:0;accent-color:var(--s)}
+.case{display:flex;align-items:center;justify-content:center;gap:10px;margin:2px 0 10px;font-weight:500;color:var(--texte);text-align:left}
+.case input{flex:none}
+.case b{color:var(--titre)}
+details{margin:14px auto 0;max-width:620px;font-size:15px;color:var(--note)}
+summary{cursor:pointer;font-weight:700;color:var(--p);min-height:30px;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:" ▾"}
+details[open] summary::after{content:" ▴"}
+details ol{text-align:left;padding-left:22px;margin:6px 0 0}
+details li{margin:5px 0}
+footer{margin-top:12px;font-size:13.5px;color:var(--note)}
+footer a{color:inherit}
+.adresse{margin:10px auto 0;max-width:none;font-size:12.5px;line-height:1.45;color:var(--note);text-align:left}
+.adresse summary{font-size:13px;font-weight:600;color:var(--note);text-align:center;min-height:24px}
+.adresse p{margin:6px 0}
+.tel-seul{display:none;font-size:14px;line-height:1.5;margin:10px 0 4px;text-align:center;font-weight:600}
+@media (hover:none) and (pointer:coarse){.carte.un .bas{display:none}.carte.un .illus{display:none}.pas-tel{display:none}.tel-seul{display:block}}
+.dl{display:flex;flex-direction:column;align-items:center;gap:4px}
+.poids{font-size:12.5px;color:var(--note)}
+.conditions{font-size:13.5px;line-height:1.5;margin:4px 0 6px;text-align:center}
+.mention{font-size:12.5px;line-height:1.45;color:var(--note);margin:12px 0 0;text-align:center}
+.mention a{color:inherit}
+.avant-dl a{color:var(--p);font-weight:600}
+.droits{font-size:12.5px;color:var(--note);margin:6px 0 0;text-align:center}
+.nom,h1,.chapeau,.atouts li,summary,footer,.droits{width:fit-content;margin-left:auto;margin-right:auto;background:var(--page);box-shadow:0 0 14px 10px var(--page);border-radius:14px}
+@media (min-width:860px){
+ .atouts{flex-direction:row;justify-content:center;gap:12px 34px}
+ .atouts li{white-space:nowrap}
+ .cartes{grid-template-columns:1fr 1fr}
+}
+@media (max-width:519px){.carte{padding:16px 14px 18px}.bas .btn,.carte.deux button[type=submit]{width:100%}.case{text-align:left}}
+.langues{position:absolute;top:10px;right:16px;z-index:2;font-size:13.5px;font-weight:600;display:flex;gap:10px}
+.langues a{color:var(--note);text-decoration:none}.langues a[aria-current]{color:var(--p);text-decoration:underline}
+.maj{max-width:640px;margin:0 auto;text-align:left;align-items:stretch}
+.etapes{margin:0;padding-left:24px;display:flex;flex-direction:column;gap:14px;color:var(--texte)}
+.etapes li{padding-left:4px}.etapes b{color:var(--titre)}
+.etapes .bas{justify-content:center;margin-top:10px}
+@media (hover:none) and (pointer:coarse){.maj .etapes{display:none}}
+@media (min-width:860px){.maj{width:640px}}
+.btn-ordi::before{content:"";flex:none;width:20px;height:20px;margin-right:8px;background:currentColor;-webkit-mask:var(--ico) center/contain no-repeat;mask:var(--ico) center/contain no-repeat}
+#lien-windows{--ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='8' height='8' rx='1.5'/%3E%3Crect x='13' y='3' width='8' height='8' rx='1.5'/%3E%3Crect x='3' y='13' width='8' height='8' rx='1.5'/%3E%3Crect x='13' y='13' width='8' height='8' rx='1.5'/%3E%3C/svg%3E")}
+#lien-mac{--ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 5.5A1.5 1.5 0 0 1 6.5 4h11A1.5 1.5 0 0 1 19 5.5V15H5z M7 6v7h10V6z M2 16.5h20l-1.2 2.3a1.5 1.5 0 0 1-1.3.7H4.5a1.5 1.5 0 0 1-1.3-.7z' fill-rule='evenodd'/%3E%3C/svg%3E")}
+</style>
+</head>
+<body>
+<div class="fondpage" aria-hidden="true"><svg viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid meet" fill="none" stroke="currentColor" stroke-width="4">
+<rect x="560" y="10" width="280" height="110" rx="22"/><circle cx="700.0" cy="65.0" r="28"/><text x="700.0" y="76.0" text-anchor="middle">V</text>
+<path d="M700 120V380"/>
+<rect x="560" y="380" width="280" height="110" rx="22"/><circle cx="700.0" cy="435.0" r="28"/><text x="700.0" y="446.0" text-anchor="middle">D</text>
+<path d="M700 490V660M160 660H1240M160 660V780M520 660V780M880 660V780M1240 660V780"/>
+<rect x="20" y="780" width="280" height="110" rx="22"/><circle cx="160.0" cy="835.0" r="28"/><text x="160.0" y="846.0" text-anchor="middle">C</text>
+<rect x="380" y="780" width="280" height="110" rx="22"/><circle cx="520.0" cy="835.0" r="28"/><text x="520.0" y="846.0" text-anchor="middle">L</text>
+<rect x="740" y="780" width="280" height="110" rx="22"/><circle cx="880.0" cy="835.0" r="28"/><text x="880.0" y="846.0" text-anchor="middle">S</text>
+<rect x="1100" y="780" width="280" height="110" rx="22" stroke-dasharray="14 10"/><circle cx="1240.0" cy="835.0" r="28"/><text x="1240.0" y="846.0" text-anchor="middle">N</text>
+</svg></div>
+<nav class="langues" aria-label="Sprache"><a href="../mise-a-jour.html" lang="fr">FR</a><a href="../nl/mise-a-jour.html" lang="nl">NL</a><a href="mise-a-jour.html" lang="de" aria-current="page">DE</a><a href="../en/mise-a-jour.html" lang="en">EN</a></nav>
+<main>
+
+  <div class="logozone">
+        <svg class="logo" viewBox="0 0 512 512" aria-hidden="true"><defs><mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="512" height="512"><rect width="512" height="512" fill="#fff"/><polygon points="242.76,254.44 336.24,308.56 517.74,-4.94 424.26,-59.06" fill="#000"/></mask></defs><rect x="8" y="8" width="496" height="496" rx="118" fill="#fbfaf7" stroke="#111418" stroke-width="20"/><rect x="125" y="146" width="250" height="250" rx="60" fill="none" stroke="#111418" stroke-width="56" mask="url(#m)"/><path d="M211 236 L273 310 L383 120" fill="none" stroke="#111418" stroke-width="64" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <b class="nom">Ulmi</b>
+
+    <h1>Neue Version von Ulmi</h1>
+  <p class="chapeau">Ihre Dokumente und Ihr persönlicher Code bleiben unverändert: Sie müssen nichts neu machen.</p>
+
+  <div class="carte un maj">
+    <ol class="etapes">
+      <li><b>Schließen Sie Ulmi</b>: Schließen Sie sein schwarzes Fenster.</li>
+      <li><b>Laden Sie die neue Version herunter</b> <b id="numero-version"></b>:
+                <div class="bas">
+          <div class="dl pour-windows"><a class="btn btn-ordi" id="lien-windows" href="#">Für Windows</a><small class="poids" id="poids-windows"></small></div>
+          <div class="dl pour-mac"><a class="btn btn-ordi" id="lien-mac" href="#">Für Mac</a><small class="poids" id="poids-mac"></small></div>
+        </div>
+      </li>
+      <li class="pour-windows"><b>Öffnen Sie die heruntergeladene Datei</b>: Rechtsklick, „Alle extrahieren…“, dann Doppelklick auf „Ulmi.bat“.</li>
+      <li class="pour-mac"><b>Öffnen Sie die heruntergeladene Datei</b>, dann Doppelklick auf „Ulmi.command“.</li>
+      <li><b>Das war's</b>: Ulmi öffnet Ihren Bereich wieder. Den alten Ordner von Ulmi können Sie in den Papierkorb legen.</li>
+    </ol>
+    <p class="tel-seul">Ulmi wird auf einem Computer (Mac oder Windows) installiert, nicht auf einem Telefon. Öffnen Sie diese Seite auf Ihrem Computer.</p>
+    <p class="conditions avant-dl">Die <a href="conditions.html">Bedingungen der Testversion</a> gelten weiterhin für die neue Version.</p>
+  </div>
+
+  <footer>Ulmi · Testversion. Ulmi wird herausgegeben von Arthur Nyssen, Einzelunternehmen (natürliche Person), Rue de la Cité 5, boîte A021, 4000 Liège, Belgien. Unternehmens- und MwSt.-Nummer: BE1032636759. Kontakt: <a id="contact" href="#"></a> · <a href="confidentialite.html">Datenschutzerklärung</a> · Gesichter der Assistenten: mit KI erzeugte Illustrationen</footer>
+  <p class="droits">© 2026 Ulmi · Alle Rechte vorbehalten</p>
+</main>
+
+<script>
+var CONTACT = 'ulmi.contact@gmail.com';
+fetch('/version.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (v) { if (v && /^\d+(\.\d+)*$/.test(String(v.version))) document.getElementById('numero-version').textContent = v.version; }).catch(function () {});
+var ORDI = (new URLSearchParams(location.search).get('ordi') || '').toLowerCase();
+if (ORDI === 'windows' || ORDI === 'mac') [].forEach.call(document.querySelectorAll(ORDI === 'mac' ? '.pour-windows' : '.pour-mac'), function (e) { e.style.display = 'none'; });
+var LIENS = {
+  windows: 'https://drive.google.com/file/d/12McP9gIOgaVq9f2mTSX7eR3KR2cKmbTs/view?usp=sharing',
+  mac: 'https://drive.google.com/file/d/16YywpF3eGJ3hBwCMfsfiwq4LxfjTwMFb/view?usp=sharing'
+};
+document.getElementById('lien-windows').href = LIENS.windows;
+document.getElementById('lien-mac').href = LIENS.mac;
+var POIDS = { windows: 'environ 210 Mo', mac: 'environ 210 Mo' };
+document.getElementById('poids-windows').textContent = 'Fichier : ' + POIDS.windows;
+document.getElementById('poids-mac').textContent = 'Fichier : ' + POIDS.mac;
+var c = document.getElementById('contact'); c.href = 'mailto:' + CONTACT; c.textContent = CONTACT;
+</script>
+</body>
+</html>
