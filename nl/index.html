@@ -86,6 +86,9 @@ footer a{color:inherit}
 @media (max-width:519px){.carte{padding:16px 14px 18px}.bas .btn,.carte.deux button[type=submit]{width:100%}.case{text-align:left}}
 .langues{position:absolute;top:10px;right:16px;z-index:2;font-size:13.5px;font-weight:600;display:flex;gap:10px}
 .langues a{color:var(--note);text-decoration:none}.langues a[aria-current]{color:var(--p);text-decoration:underline}
+.btn-ordi::before{content:"";flex:none;width:20px;height:20px;margin-right:8px;background:currentColor;-webkit-mask:var(--ico) center/contain no-repeat;mask:var(--ico) center/contain no-repeat}
+#lien-windows{--ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='8' height='8' rx='1.5'/%3E%3Crect x='13' y='3' width='8' height='8' rx='1.5'/%3E%3Crect x='3' y='13' width='8' height='8' rx='1.5'/%3E%3Crect x='13' y='13' width='8' height='8' rx='1.5'/%3E%3C/svg%3E")}
+#lien-mac{--ico:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 5.5A1.5 1.5 0 0 1 6.5 4h11A1.5 1.5 0 0 1 19 5.5V15H5z M7 6v7h10V6z M2 16.5h20l-1.2 2.3a1.5 1.5 0 0 1-1.3.7H4.5a1.5 1.5 0 0 1-1.3-.7z' fill-rule='evenodd'/%3E%3C/svg%3E")}
 </style>
 </head>
 <body>
@@ -125,8 +128,8 @@ footer a{color:inherit}
       <p class="tel-seul">Ulmi wordt op een computer (Mac of Windows) geïnstalleerd, niet op een telefoon. Open deze pagina op uw computer om het te downloaden. Van hieruit kunt u al uw aanvraag hieronder versturen.</p>
             <p class="conditions avant-dl">Lees vóór het downloaden de <a href="conditions.html">voorwaarden van de testversie</a>. Door Ulmi te installeren of te starten, aanvaardt u deze voorwaarden.</p>
       <div class="bas">
-        <div class="dl"><a class="btn" id="lien-windows" href="#">⬇ Voor Windows</a><small class="poids" id="poids-windows"></small></div>
-        <div class="dl"><a class="btn" id="lien-mac" href="#">⬇ Voor Mac</a><small class="poids" id="poids-mac"></small></div>
+        <div class="dl"><a class="btn btn-ordi" id="lien-windows" href="#">Voor Windows</a><small class="poids" id="poids-windows"></small></div>
+        <div class="dl"><a class="btn btn-ordi" id="lien-mac" href="#">Voor Mac</a><small class="poids" id="poids-mac"></small></div>
       </div>
     </div>
 
@@ -178,7 +181,7 @@ var LIENS = {
 };
 document.getElementById('lien-windows').href = LIENS.windows;
 document.getElementById('lien-mac').href = LIENS.mac;
-var POIDS = { windows: 'ongeveer 200 MB', mac: 'ongeveer 210 MB' };
+var POIDS = { windows: 'ongeveer 210 MB', mac: 'ongeveer 210 MB' };
 document.getElementById('poids-windows').textContent = 'Bestand: ' + POIDS.windows;
 document.getElementById('poids-mac').textContent = 'Bestand: ' + POIDS.mac;
 var c = document.getElementById('contact'); c.href = 'mailto:' + CONTACT; c.textContent = CONTACT;
